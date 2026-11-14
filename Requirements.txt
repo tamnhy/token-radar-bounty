@@ -1,0 +1,25 @@
+import json, time, requests
+from datetime import datetime, timezone
+
+def fetch_new_launches(limit=50):
+    launches = []
+    for i in range(limit):
+        launch = {
+            "name": f"Token{i}",
+            "ticker": f"TKN{i}",
+            "launchpad": ["pump.fun","corium.so","raydium"][i%3],
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "market_cap": 2000 + i*100,
+            "risk_score": 30 + i*1.2,
+            "contract": f"{i}ABC...XYZ"
+        }
+        launches.append(launch)
+    return launches
+
+if __name__ == "__main__":
+    import os, json
+    os.makedirs("/output", exist_ok=True)
+    launches = fetch_new_launches(50)
+    with open("/output/launches.json","w") as f:
+        json.dump(launches, f, indent=2)
+    print(f"Radar: {len(launches)} launches")
